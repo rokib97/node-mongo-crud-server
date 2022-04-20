@@ -19,5 +19,20 @@
  * CRUD Operation
  * 1. search node mongodb crud operation
  * 2. create async run function
+ * ---------------------
  *
+ * Sending data client to server
+ * 1. client side create a form
+ * 2. onsubmit > get form data and create user object
+ * 3. on server: create user POST method to receive data on backend
+ * 4. On client side set fetch with POST headers with body
+ * 5. make sure you return a json from the post api (res.send(json))
+ *-----------------------------
+
+ LOAD data to the cliend side
+ * 1.create get API on the server side
+ * 2.create a query object
+ * 3.collection.find(query)
+ * 4.cursor.toArray
+ * 5.return the result 
  * */
