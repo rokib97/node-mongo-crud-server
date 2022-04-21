@@ -35,4 +35,7 @@
  * 3.collection.find(query)
  * 4.cursor.toArray
  * 5.return the result 
+ * 6. fetech client useEffect like you have done before
+ * ----------------------------------- 
+ * 
  * */

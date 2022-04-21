@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const ObjectId = require("mongodb").ObjectId;
 
 const app = express();
 const port = process.env.POST || 5000;
@@ -25,6 +26,7 @@ async function run() {
     await client.connect();
     const userCollection = client.db("foodExpress").collection("user");
 
+    // get user
     app.get("/user", async (req, res) => {
       const query = {};
       const cursor = userCollection.find(query);
@@ -32,11 +34,47 @@ async function run() {
       res.send(users);
     });
 
+    // get single user
+    app.get("/user/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
     // POST:user add a new user
     app.post("/user", async (req, res) => {
       const newUSer = req.body;
       console.log("adding new user", newUSer);
       const result = await userCollection.insertOne(newUSer);
+      res.send(result);
+    });
+
+    // update user
+    app.put("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedUSer = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          name: updatedUSer.name,
+          email: updatedUSer.email,
+        },
+      };
+      const result = await userCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    // delete a user
+    app.delete("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
